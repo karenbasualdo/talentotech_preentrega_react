@@ -7,6 +7,10 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5000,
-    allowedHosts: ['all']
+    hmr: {
+    host: '11146f12-e16d-4b1b-afc8-86b11086bfe5-00-3jiiygbbddstt.worf.replit.dev',
+    port: 443,
+    protocol: 'wss'
+    }
   }
 })
