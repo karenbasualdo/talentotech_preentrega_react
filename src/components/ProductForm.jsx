@@ -23,7 +23,6 @@ const ProductForm = ({ onSuccess, productoEditar, setProductoEditar }) => {
         image: productoEditar.image || "",
         stock: productoEditar.stock || "",
         category: productoEditar.category || "",
-        id: productoEditar.id,
       });
     }
   }, [productoEditar]);
@@ -44,4 +43,127 @@ const ProductForm = ({ onSuccess, productoEditar, setProductoEditar }) => {
       title: form.title,
       price: form.price,
       description: form.description,
-      image: form.i
+      image: form.image,
+      stock: Number(form.stock),
+      category: form.category,
+    };
+
+    try {
+      if (productoEditar) {
+        await fetch(`${API_URL}/${productoEditar.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(producto),
+        });
+        toast.success("Producto actualizado");
+        setProductoEditar(null);
+      } else {
+        await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(producto),
+        });
+        toast.success("Producto creado");
+      }
+
+      setForm({
+        title: "",
+        price: "",
+        description: "",
+        image: "",
+        stock: "",
+        category: "",
+      });
+
+      onSuccess();
+    } catch (error) {
+      toast.error("Error al guardar producto");
+    }
+  };
+
+  return (
+    <Card className="p-3 mb-4">
+      <h4>{productoEditar ? "Editar producto" : "Agregar producto"}</h4>
+
+      <Form onSubmit={handleSubmit}>
+        <Form.Control
+          name="title"
+          placeholder="Nombre"
+          className="mb-2"
+          value={form.title}
+          onChange={handleChange}
+        />
+
+        <Form.Control
+          name="price"
+          type="number"
+          placeholder="Precio"
+          className="mb-2"
+          value={form.price}
+          onChange={handleChange}
+        />
+
+        <Form.Control
+          name="image"
+          placeholder="URL imagen"
+          className="mb-2"
+          value={form.image}
+          onChange={handleChange}
+        />
+
+        <Form.Control
+          name="description"
+          placeholder="Descripción"
+          className="mb-2"
+          value={form.description}
+          onChange={handleChange}
+        />
+
+        <Form.Control
+          name="stock"
+          type="number"
+          placeholder="Stock"
+          className="mb-2"
+          value={form.stock}
+          onChange={handleChange}
+        />
+
+        <Form.Control
+          name="category"
+          placeholder="Categoría"
+          className="mb-3"
+          value={form.category}
+          onChange={handleChange}
+        />
+
+        <Button type="submit">
+          {productoEditar ? "Actualizar" : "Guardar"}
+        </Button>
+
+        {productoEditar && (
+          <Button
+            variant="secondary"
+            className="ms-2"
+            onClick={() => {
+              setProductoEditar(null);
+              setForm({
+                title: "",
+                price: "",
+                description: "",
+                image: "",
+                stock: "",
+                category: "",
+              });
+            }}
+          >
+            Cancelar
+          </Button>
+        )}
+      </Form>
+    </Card>
+  );
+};
+
+export default ProductForm;
+
+
