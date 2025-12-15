@@ -1,5 +1,6 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { useCarrito } from "./CarritoContext";
+import { toast } from "react-toastify";
 
 const Carrito = () => {
   const {
@@ -14,6 +15,11 @@ const Carrito = () => {
     (acc, p) => acc + Number(p.price) * p.quantity,
     0
   );
+
+  const finalizarCompra = () => {
+    toast.success("Compra realizada con éxito");
+    vaciarCarrito();
+  };
 
   return (
     <div>
@@ -36,11 +42,12 @@ const Carrito = () => {
                   <div className="flex-grow-1">
                     <h5>{p.title}</h5>
                     <p>Precio: ${p.price}</p>
-                    <p>Subtotal: ${(p.price * p.quantity).toFixed(2)}</p>
+                    <p>
+                      Subtotal: ${(p.price * p.quantity).toFixed(2)}
+                    </p>
 
                     <div className="d-flex align-items-center">
                       <Button
-                        variant="secondary"
                         size="sm"
                         onClick={() => decrementar(p.id)}
                       >
@@ -50,7 +57,6 @@ const Carrito = () => {
                       <span className="mx-3">{p.quantity}</span>
 
                       <Button
-                        variant="secondary"
                         size="sm"
                         onClick={() => incrementar(p.id)}
                       >
@@ -72,10 +78,18 @@ const Carrito = () => {
             ))}
           </Row>
 
-          <h4 className="mt-3">Total: ${total.toFixed(2)}</h4>
+          <h4>Total: ${total.toFixed(2)}</h4>
 
           <Button variant="warning" onClick={vaciarCarrito}>
             Vaciar carrito
+          </Button>
+
+          <Button
+            variant="success"
+            className="ms-3"
+            onClick={finalizarCompra}
+          >
+            Finalizar compra
           </Button>
         </>
       )}
@@ -84,3 +98,4 @@ const Carrito = () => {
 };
 
 export default Carrito;
+

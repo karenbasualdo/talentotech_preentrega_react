@@ -1,42 +1,178 @@
+/* ===== RESET BÁSICO ===== */
+* {
+  box-sizing: border-box;
+}
+
+/* ===== BODY GENERAL ===== */
+body {
+  margin: 0;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #fff5f8, #ffffff);
+  color: #333;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
 #root {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 1.5rem;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* ===== TÍTULOS ===== */
+h1, h2, h3, h4 {
+  color: #b83280;
+  font-weight: 600;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+  margin-bottom: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+h2 {
+  margin-bottom: 1rem;
 }
 
+/* ===== NAVBAR ===== */
+.navbar {
+  background: linear-gradient(90deg, #b83280, #f472b6);
+}
+
+.navbar-brand,
+.navbar-nav .nav-link {
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== CARDS DE PRODUCTO ===== */
 .card {
-  padding: 2em;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
 }
 
-.read-the-docs {
-  color: #888;
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.card img {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  object-fit: cover;
+}
+
+/* ===== TEXTO DE PRODUCTO ===== */
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #b83280;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* ===== BOTONES ===== */
+.btn-primary {
+  background-color: #b83280;
+  border: none;
+  border-radius: 30px;
+  padding: 0.5rem 1.2rem;
+}
+
+.btn-primary:hover {
+  background-color: #9d286f;
+}
+
+.btn-success {
+  border-radius: 30px;
+}
+
+.btn-warning {
+  border-radius: 30px;
+}
+
+.btn-danger {
+  border-radius: 30px;
+}
+
+.btn-secondary {
+  border-radius: 30px;
+}
+
+/* ===== FORMULARIOS (ADMIN / LOGIN) ===== */
+form input,
+form textarea {
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: #b83280;
+  box-shadow: 0 0 0 0.15rem rgba(184, 50, 128, 0.25);
+}
+
+/* ===== CARRITO ===== */
+.carrito-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.carrito-item img {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.carrito-item h5 {
+  margin: 0;
+  color: #b83280;
+}
+
+/* ===== TOTAL ===== */
+.total {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #b83280;
+  margin-top: 1rem;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background-color: #fde2f3;
+  text-align: center;
+  border-radius: 20px 20px 0 0;
+}
+
+footer p {
+  margin: 0;
+  color: #7a2b5d;
+}
+
+/* ===== TOASTIFY ===== */
+.Toastify__toast {
+  border-radius: 12px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .card img {
+    height: 200px;
+  }
 }

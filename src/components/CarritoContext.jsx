@@ -44,12 +44,10 @@ export const CarritoProvider = ({ children }) => {
 
   const eliminarDelCarrito = (id) => {
     setCarrito(carrito.filter((p) => p.id !== id));
-    toast.info("Producto eliminado");
   };
 
   const vaciarCarrito = () => {
     setCarrito([]);
-    toast.warn("Carrito vaciado");
   };
 
   return (
@@ -69,3 +67,4 @@ export const CarritoProvider = ({ children }) => {
 };
 
 export const useCarrito = () => useContext(CarritoContext);
+

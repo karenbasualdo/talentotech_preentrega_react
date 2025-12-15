@@ -1,34 +1,31 @@
-import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button } from "react-bootstrap";
+import { useCarrito } from "./CarritoContext";
 
-const ProductCard = ({ product, agregarAlCarrito }) => {
-return (
+const ProductCard = ({ product }) => {
+  const { agregarAlCarrito } = useCarrito();
 
-    // Armo la cards
-<Card className="h-100 d-flex flex-column">
-    <Card.Img
-    variant="top"
-    src={product.image}
-    alt={product.title}
-    className="card-img-top img-fluid" 
-    style={{ height: '200px', objectFit: 'cover' }} 
-    />
+  return (
+    <Card className="h-100">
+      <Card.Img
+        variant="top"
+        src={product.image}
+        alt={product.title}
+        style={{ height: "250px", objectFit: "cover" }}
+      />
+      <Card.Body>
+        <Card.Title>{product.title}</Card.Title>
+        <Card.Text>${product.price}</Card.Text>
 
-    
-    <Card.Body className="d-flex flex-column">
-    <Card.Title>{product.title}</Card.Title>
-    <Card.Text>
-        {product.description.slice(0, 100)}...
-    </Card.Text>
-    <Card.Text>
-        <strong>${product.price}</strong>
-    </Card.Text>
-    <Button variant="primary" onClick={() => agregarAlCarrito(product)}>
-        Agregar al carrito
-    </Button>
-    </Card.Body>
-</Card>
-);
+        <Button
+          variant="primary"
+          disabled={product.stock === 0}
+          onClick={() => agregarAlCarrito(product)}
+        >
+          {product.stock === 0 ? "Sin stock" : "Agregar al carrito"}
+        </Button>
+      </Card.Body>
+    </Card>
+  );
 };
 
 export default ProductCard;

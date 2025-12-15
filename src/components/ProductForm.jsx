@@ -10,11 +10,21 @@ const ProductForm = ({ onSuccess, productoEditar, setProductoEditar }) => {
     price: "",
     description: "",
     image: "",
+    stock: "",
+    category: "",
   });
 
   useEffect(() => {
     if (productoEditar) {
-      setForm(productoEditar);
+      setForm({
+        title: productoEditar.title || "",
+        price: productoEditar.price || "",
+        description: productoEditar.description || "",
+        image: productoEditar.image || "",
+        stock: productoEditar.stock || "",
+        category: productoEditar.category || "",
+        id: productoEditar.id,
+      });
     }
   }, [productoEditar]);
 
@@ -26,96 +36,12 @@ const ProductForm = ({ onSuccess, productoEditar, setProductoEditar }) => {
     e.preventDefault();
 
     if (!form.title) return toast.error("Nombre obligatorio");
-    if (form.price <= 0) return toast.error("Precio inválido");
+    if (Number(form.price) <= 0) return toast.error("Precio inválido");
     if (form.description.length < 10)
       return toast.error("Descripción muy corta");
 
-    try {
-      if (productoEditar) {
-        // EDITAR
-        await fetch(`${API_URL}/${productoEditar.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-        toast.success("Producto actualizado");
-        setProductoEditar(null);
-      } else {
-        // CREAR
-        await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-        toast.success("Producto creado");
-      }
-
-      setForm({ title: "", price: "", description: "", image: "" });
-      onSuccess();
-    } catch {
-      toast.error("Error al guardar producto");
-    }
-  };
-
-  return (
-    <Card className="p-3 mb-4">
-      <h4>{productoEditar ? "Editar producto" : "Agregar producto"}</h4>
-
-      <Form onSubmit={handleSubmit}>
-        <Form.Control
-          name="title"
-          placeholder="Nombre"
-          className="mb-2"
-          value={form.title}
-          onChange={handleChange}
-        />
-        <Form.Control
-          name="price"
-          type="number"
-          placeholder="Precio"
-          className="mb-2"
-          value={form.price}
-          onChange={handleChange}
-        />
-        <Form.Control
-          name="image"
-          placeholder="URL imagen"
-          className="mb-2"
-          value={form.image}
-          onChange={handleChange}
-        />
-        <Form.Control
-          name="description"
-          placeholder="Descripción"
-          className="mb-2"
-          value={form.description}
-          onChange={handleChange}
-        />
-
-        <Button type="submit">
-          {productoEditar ? "Actualizar" : "Guardar"}
-        </Button>
-
-        {productoEditar && (
-          <Button
-            variant="secondary"
-            className="ms-2"
-            onClick={() => {
-              setProductoEditar(null);
-              setForm({
-                title: "",
-                price: "",
-                description: "",
-                image: "",
-              });
-            }}
-          >
-            Cancelar
-          </Button>
-        )}
-      </Form>
-    </Card>
-  );
-};
-
-export default ProductForm;
+    const producto = {
+      title: form.title,
+      price: form.price,
+      description: form.description,
+      image: form.i
