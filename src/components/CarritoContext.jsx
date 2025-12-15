@@ -7,8 +7,39 @@ export const CarritoProvider = ({ children }) => {
   const [carrito, setCarrito] = useState([]);
 
   const agregarAlCarrito = (producto) => {
-    setCarrito([...carrito, producto]);
+    const existe = carrito.find((p) => p.id === producto.id);
+
+    if (existe) {
+      setCarrito(
+        carrito.map((p) =>
+          p.id === producto.id
+            ? { ...p, quantity: p.quantity + 1 }
+            : p
+        )
+      );
+    } else {
+      setCarrito([...carrito, { ...producto, quantity: 1 }]);
+    }
+
     toast.success("Producto agregado al carrito");
+  };
+
+  const incrementar = (id) => {
+    setCarrito(
+      carrito.map((p) =>
+        p.id === id ? { ...p, quantity: p.quantity + 1 } : p
+      )
+    );
+  };
+
+  const decrementar = (id) => {
+    setCarrito(
+      carrito
+        .map((p) =>
+          p.id === id ? { ...p, quantity: p.quantity - 1 } : p
+        )
+        .filter((p) => p.quantity > 0)
+    );
   };
 
   const eliminarDelCarrito = (id) => {
@@ -23,7 +54,14 @@ export const CarritoProvider = ({ children }) => {
 
   return (
     <CarritoContext.Provider
-      value={{ carrito, agregarAlCarrito, eliminarDelCarrito, vaciarCarrito }}
+      value={{
+        carrito,
+        agregarAlCarrito,
+        incrementar,
+        decrementar,
+        eliminarDelCarrito,
+        vaciarCarrito,
+      }}
     >
       {children}
     </CarritoContext.Provider>
