@@ -1,43 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import ProductCard from './productcard';
+import { useEffect, useState } from "react";
+import { Row, Col } from "react-bootstrap";
+import ProductCard from "./productcard";
+import { useCarrito } from "./CarritoContext";
 
-const ProductList = ({ category = null, agregarAlCarrito }) => {
-const [products, setProducts] = useState([]);
-const [loading, setLoading] = useState(true);
+const ProductList = ({ category }) => {
+  const [products, setProducts] = useState([]);
+  const [busqueda, setBusqueda] = useState("");
+  const { agregarAlCarrito } = useCarrito();
 
-useEffect(() => {
-let url = 'https://fakestoreapi.com/products';
-if (category) {
-    url = `https://fakestoreapi.com/products/category/${category}`;
-}
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => res.json())
+      .then((data) => setProducts(data));
+  }, []);
 
-fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-    setProducts(data);
-    setLoading(false);
-    })
-    .catch((error) => {
-    console.error('Error fetching data:', error);
-    setLoading(false);
-    });
-}, [category]);
+  const filtrados = products.filter((p) =>
+    p.title.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
-if (loading) {
-return <div>Cargando productos...</div>;
-}
+  return (
+    <>
+      <input
+        className="form-control mb-3"
+        placeholder="Buscar productos..."
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        aria-label="Buscar productos"
+      />
 
-return (
-<Row>
-    {products.map((product) => (
-    <Col md={4} key={product.id} className="mb-4">
-        <ProductCard product={product} agregarAlCarrito={agregarAlCarrito} />
-    </Col>
-    ))}
-</Row>
-);
+      <Row>
+        {filtrados.map((product) => (
+          <Col md={4} key={product.id} className="mb-4">
+            <ProductCard
+              product={product}
+              agregarAlCarrito={agregarAlCarrito}
+            />
+          </Col>
+        ))}
+      </Row>
+    </>
+  );
 };
 
 export default ProductList;
-
