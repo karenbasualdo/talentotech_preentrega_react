@@ -4,7 +4,10 @@ import { useCarrito } from "./CarritoContext";
 const Carrito = () => {
   const { carrito, eliminarDelCarrito, vaciarCarrito } = useCarrito();
 
-  const total = carrito.reduce((acc, p) => acc + p.price, 0);
+  const total = carrito.reduce(
+    (acc, p) => acc + Number(p.price),
+    0
+  );
 
   return (
     <div>
@@ -34,6 +37,7 @@ const Carrito = () => {
           </Row>
 
           <h4>Total: ${total.toFixed(2)}</h4>
+
           <Button variant="warning" onClick={vaciarCarrito}>
             Vaciar carrito
           </Button>
@@ -44,3 +48,4 @@ const Carrito = () => {
 };
 
 export default Carrito;
+
