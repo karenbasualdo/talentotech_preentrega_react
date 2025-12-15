@@ -3,36 +3,30 @@ import { Table, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ProductForm from "./ProductForm";
 
+const API_URL = "https://693f647d12c964ee6b6fcb0e.mockapi.io/products";
+
 const Admin = () => {
   const [products, setProducts] = useState([]);
+  const [productoEditar, setProductoEditar] = useState(null);
 
   const cargarProductos = () => {
-    fetch("https://693f647d12c964ee6b6fcb0e.mockapi.io/products")
+    fetch(API_URL)
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then(setProducts)
       .catch(() => toast.error("Error al cargar productos"));
   };
 
   const eliminarProducto = async (id) => {
-    const confirmar = window.confirm(
-      "¿Estás seguro de eliminar este producto?"
-    );
+    if (!window.confirm("¿Eliminar producto?")) return;
 
-    if (!confirmar) return;
+    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    toast.info("Producto eliminado");
+    cargarProductos();
+  };
 
-    try {
-      await fetch(
-        `https://693f647d12c964ee6b6fcb0e.mockapi.io/products/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      toast.info("Producto eliminado");
-      cargarProductos();
-    } catch (error) {
-      toast.error("Error al eliminar producto");
-    }
+  const editarProducto = (producto) => {
+    setProductoEditar(producto);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -43,7 +37,11 @@ const Admin = () => {
     <div>
       <h2>Panel de Administración</h2>
 
-      <ProductForm onSuccess={cargarProductos} />
+      <ProductForm
+        onSuccess={cargarProductos}
+        productoEditar={productoEditar}
+        setProductoEditar={setProductoEditar}
+      />
 
       <Table striped bordered hover responsive>
         <thead>
@@ -59,6 +57,14 @@ const Admin = () => {
               <td>{p.title}</td>
               <td>${p.price}</td>
               <td>
+                <Button
+                  variant="warning"
+                  size="sm"
+                  className="me-2"
+                  onClick={() => editarProducto(p)}
+                >
+                  Editar
+                </Button>
                 <Button
                   variant="danger"
                   size="sm"

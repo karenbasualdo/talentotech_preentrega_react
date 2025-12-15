@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { toast } from "react-toastify";
 
-const ProductForm = ({ onSuccess }) => {
+const API_URL = "https://693f647d12c964ee6b6fcb0e.mockapi.io/products";
+
+const ProductForm = ({ onSuccess, productoEditar, setProductoEditar }) => {
   const [form, setForm] = useState({
     title: "",
     price: "",
@@ -10,71 +12,63 @@ const ProductForm = ({ onSuccess }) => {
     image: "",
   });
 
+  useEffect(() => {
+    if (productoEditar) {
+      setForm(productoEditar);
+    }
+  }, [productoEditar]);
+
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.title) {
-      toast.error("El nombre es obligatorio");
-      return;
-    }
-
-    if (form.price <= 0) {
-      toast.error("El precio debe ser mayor a 0");
-      return;
-    }
-
-    if (form.description.length < 10) {
-      toast.error("La descripción debe tener al menos 10 caracteres");
-      return;
-    }
+    if (!form.title) return toast.error("Nombre obligatorio");
+    if (form.price <= 0) return toast.error("Precio inválido");
+    if (form.description.length < 10)
+      return toast.error("Descripción muy corta");
 
     try {
-      await fetch(
-        "https://693f647d12c964ee6b6fcb0e.mockapi.io/products",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+      if (productoEditar) {
+        // EDITAR
+        await fetch(`${API_URL}/${productoEditar.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form),
-        }
-      );
+        });
+        toast.success("Producto actualizado");
+        setProductoEditar(null);
+      } else {
+        // CREAR
+        await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        toast.success("Producto creado");
+      }
 
-      toast.success("Producto creado correctamente");
-      setForm({
-        title: "",
-        price: "",
-        description: "",
-        image: "",
-      });
-
+      setForm({ title: "", price: "", description: "", image: "" });
       onSuccess();
-    } catch (error) {
-      toast.error("Error al crear el producto");
+    } catch {
+      toast.error("Error al guardar producto");
     }
   };
 
   return (
     <Card className="p-3 mb-4">
-      <h4>Agregar producto</h4>
+      <h4>{productoEditar ? "Editar producto" : "Agregar producto"}</h4>
+
       <Form onSubmit={handleSubmit}>
         <Form.Control
           name="title"
-          placeholder="Nombre del producto"
+          placeholder="Nombre"
           className="mb-2"
           value={form.title}
           onChange={handleChange}
-          aria-label="Nombre del producto"
         />
-
         <Form.Control
           name="price"
           type="number"
@@ -82,28 +76,43 @@ const ProductForm = ({ onSuccess }) => {
           className="mb-2"
           value={form.price}
           onChange={handleChange}
-          aria-label="Precio del producto"
         />
-
         <Form.Control
           name="image"
-          placeholder="URL de la imagen"
+          placeholder="URL imagen"
           className="mb-2"
           value={form.image}
           onChange={handleChange}
-          aria-label="Imagen del producto"
         />
-
         <Form.Control
           name="description"
           placeholder="Descripción"
           className="mb-2"
           value={form.description}
           onChange={handleChange}
-          aria-label="Descripción del producto"
         />
 
-        <Button type="submit">Guardar producto</Button>
+        <Button type="submit">
+          {productoEditar ? "Actualizar" : "Guardar"}
+        </Button>
+
+        {productoEditar && (
+          <Button
+            variant="secondary"
+            className="ms-2"
+            onClick={() => {
+              setProductoEditar(null);
+              setForm({
+                title: "",
+                price: "",
+                description: "",
+                image: "",
+              });
+            }}
+          >
+            Cancelar
+          </Button>
+        )}
       </Form>
     </Card>
   );

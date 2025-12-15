@@ -1,13 +1,13 @@
-import React from 'react';
-import ProductList from './productlist';
+import ProductList from "./productlist";
 
-const Infaltables = ({ agregarAlCarrito }) => {
-return (
-<div className="container">
-    <h1>Infaltables</h1>
-    <ProductList category="jewelery" agregarAlCarrito={agregarAlCarrito} />
-</div>
-);
+const Infaltables = () => {
+  return (
+    <div className="container">
+      <h1>Infaltables</h1>
+      <p>Los productos que no pueden faltar</p>
+      <ProductList filtro="crema" />
+    </div>
+  );
 };
 
 export default Infaltables;
