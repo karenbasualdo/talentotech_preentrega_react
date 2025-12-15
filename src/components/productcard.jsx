@@ -1,11 +1,17 @@
 import { Card, Button } from "react-bootstrap";
 import { useCarrito } from "./CarritoContext";
+import { toast } from "react-toastify";
 
 const ProductCard = ({ product }) => {
   const { agregarAlCarrito } = useCarrito();
 
+  const handleAdd = () => {
+    agregarAlCarrito(product);
+    toast.success("Agregado al carrito 💖");
+  };
+
   return (
-    <Card className="h-100">
+    <Card className="h-100 producto-card">
       <Card.Img
         variant="top"
         src={product.image}
@@ -19,7 +25,7 @@ const ProductCard = ({ product }) => {
         <Button
           variant="primary"
           disabled={product.stock === 0}
-          onClick={() => agregarAlCarrito(product)}
+          onClick={handleAdd}
         >
           {product.stock === 0 ? "Sin stock" : "Agregar al carrito"}
         </Button>
@@ -29,3 +35,4 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
+

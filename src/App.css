@@ -176,3 +176,29 @@ footer p {
     height: 200px;
   }
 }
+/* ===== BANNER COSMÉTICA ===== */
+.banner-cosmetica {
+  background: linear-gradient(90deg, #f472b6, #b83280);
+  color: white;
+  text-align: center;
+  padding: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border-radius: 0 0 20px 20px;
+  margin-bottom: 1rem;
+}
+
+/* ===== ANIMACIÓN PRODUCTO ===== */
+.producto-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 28px rgba(184, 50, 128, 0.3);
+}
+
+/* ===== BADGE CARRITO ===== */
+.badge {
+  font-size: 0.7rem;
+} 

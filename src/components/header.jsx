@@ -1,13 +1,22 @@
 import { Link } from "react-router-dom";
-import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import { FaShoppingCart } from "react-icons/fa";
+import { Navbar, Nav, Container, Button, Badge } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { useCarrito } from "./CarritoContext";
 
 const Header = () => {
+  const { carrito } = useCarrito();
+
+  const cantidadTotal = carrito.reduce(
+    (acc, p) => acc + p.quantity,
+    0
+  );
+
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
+    <Navbar expand="lg">
       <Container>
         <Navbar.Brand as={Link} to="/">
-          Los mejores productos
+          💄 Belleza Natural
         </Navbar.Brand>
 
         <Nav className="ms-auto align-items-center">
@@ -24,8 +33,17 @@ const Header = () => {
             Administración
           </Button>
 
-          <Link to="/carrito" className="text-white">
-            <FaShoppingCart size={20} />
+          <Link to="/carrito" className="position-relative text-white">
+            <FontAwesomeIcon icon={faShoppingCart} size="lg" />
+            {cantidadTotal > 0 && (
+              <Badge
+                bg="danger"
+                pill
+                className="position-absolute top-0 start-100 translate-middle"
+              >
+                {cantidadTotal}
+              </Badge>
+            )}
           </Link>
         </Nav>
       </Container>
@@ -34,3 +52,4 @@ const Header = () => {
 };
 
 export default Header;
+

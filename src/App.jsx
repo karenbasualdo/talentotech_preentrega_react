@@ -7,6 +7,7 @@ import Carrito from "./components/carrito";
 import Ofertas from "./components/ofertas";
 import Infaltables from "./components/infaltables";
 import Admin from "./components/Admin";
+import Banner from "./components/Banner";
 
 import { AuthProvider } from "./components/AuthContext";
 import { CarritoProvider } from "./components/CarritoContext";
@@ -22,6 +23,8 @@ function App() {
       <CarritoProvider>
         <Router>
           <Header />
+          <Banner />
+
           <div className="container mt-4">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -38,7 +41,6 @@ function App() {
                 }
               />
 
-              {/* RUTA ADMIN */}
               <Route
                 path="/admin"
                 element={
@@ -49,6 +51,7 @@ function App() {
               />
             </Routes>
           </div>
+
           <Footer />
           <ToastContainer position="top-right" />
         </Router>
@@ -58,3 +61,4 @@ function App() {
 }
 
 export default App;
+
